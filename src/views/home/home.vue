@@ -236,6 +236,9 @@ export default {
         }
     },
     methods: {
+        init(){
+          this.$API.getUsers(1,10);
+        },
         addNewToDoItem () {
             this.showAddNewTodo = true;
         },
@@ -256,6 +259,8 @@ export default {
             this.showAddNewTodo = false;
             this.newToDoItemValue = '';
         }
-    }
+    },mounted () {
+  this.init();
+}
 };
 </script>

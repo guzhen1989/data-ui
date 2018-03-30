@@ -75,6 +75,15 @@ export const appRouter = [
         children: [
             { path: 'index', title: '权限管理', name: 'access_index', component: () => import('@/views/access/access.vue') }
         ]
+    },{
+        path: '/users',
+        icon: 'key',
+        name: 'users',
+        title: '用户管理',
+        component: Main,
+        children: [
+            { path: 'index', title: '用户管理', name: 'users_index', component: () => import('@/views/users/users.vue') }
+        ]
     },
     {
         path: '/access-test',
@@ -175,18 +184,18 @@ export const appRouter = [
 
         ]
     },
-    // {
-    //     path: '/charts',
-    //     icon: 'ios-analytics',
-    //     name: 'charts',
-    //     title: '图表',
-    //     component: Main,
-    //     children: [
-    //         { path: 'pie', title: '饼状图', name: 'pie', icon: 'ios-pie', component: resolve => { require('@/views/access/access.vue') },
-    //         { path: 'histogram', title: '柱状图', name: 'histogram', icon: 'stats-bars', component: resolve => { require('@/views/access/access.vue') }
+    {
+        path: '/charts',
+        icon: 'ios-analytics',
+        name: 'charts',
+        title: '图表',
+        component: Main,
+        children: [
+            { path: 'pie', title: '饼状图', name: 'pie', icon: 'ios-pie', component: resolve => { require('@/views/access/access.vue') }},
+            { path: 'histogram', title: '柱状图', name: 'histogram', icon: 'stats-bars', component: resolve => { require('@/views/access/access.vue') }}
 
-    //     ]
-    // },
+        ]
+    },
     {
         path: '/tables',
         icon: 'ios-grid-view',

@@ -17,6 +17,17 @@ API = {
                 type: 'post'
             }
         );
+    },
+    getUsers (page, size) {
+        return axiosAction(
+            {
+                url: '/api/uc/users',
+                params: {'page': page, 'size': size},
+                needLoading: false,
+                needEncrypt: false,
+                type: 'get'
+            }
+        );
     }
 };
 
@@ -31,17 +42,11 @@ ajax.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     config.headers.common['Content-Type'] = 'application/json';
     config.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    // let token = window.localStorage.getItem('token');
-    // 把token放到参数里面
-    // if (token && config.params) {
-    //   config.params.token = token
-    // } else {
-    //   config.params = { 'token': token }
-    // }
+    let token = window.localStorage.getItem('token');
     // 把token放到header里面
-    // if (token) {
-    //     config.headers['X-Auth-Token'] = token;
-    // }
+    if (token) {
+        config.headers.common['X-Auth-Token'] = token;
+    }
     return config;
 }, function (error) {
     // 对请求错误做些什么
@@ -51,6 +56,10 @@ ajax.interceptors.request.use(function (config) {
 
 ajax.interceptors.response.use((res) => {
     let status = res.status;
+    let token = res.headers['x-auth-token'];
+    if (token) {
+        window.localStorage.setItem('token', token);
+    }
     if (status === 200) {
         return Promise.resolve(res.data);
     } else {
