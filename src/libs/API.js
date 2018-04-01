@@ -90,11 +90,20 @@ const remote = {};
 ajaxMethod.forEach((method) => {
     remote[method] = function (uri, data) {
         return new Promise(function (resolve, reject) {
-            ajax[method](uri, data).then(function (data) {
+            if('get'===method){
+              ajax[method](uri, {params:data}).then(function (data) {
                 resolve(data);
-            }).catch(function (error) {
+              }).catch(function (error) {
                 reject(error);
-            });
+              });
+            }else {
+              ajax[method](uri, data).then(function (data) {
+                resolve(data);
+              }).catch(function (error) {
+                reject(error);
+              });
+            }
+
         });
     };
 });

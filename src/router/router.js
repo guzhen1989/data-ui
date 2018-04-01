@@ -77,12 +77,13 @@ export const appRouter = [
         ]
     },{
         path: '/users',
-        icon: 'key',
+        icon: 'person',
         name: 'users',
         title: '用户管理',
         component: Main,
         children: [
-            { path: 'index', title: '用户管理', name: 'users_index', component: () => import('@/views/users/users.vue') }
+            { path: 'users_index', title: '用户', name: 'users_index', component: () => import('@/views/users/users.vue') },
+            { path: 'users_form', title: '用户表单', name: 'users_form', component: () => import('@/views/users/users-form.vue') }
         ]
     },
     {

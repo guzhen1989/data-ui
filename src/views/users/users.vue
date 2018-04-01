@@ -1,42 +1,36 @@
 <style lang="less">
-    /*@import "./home.less";*/
     @import "../../styles/common.less";
 </style>
 <template>
     <div>
-    <Row>
-
-    </Row>
-    <Table border :columns="columns7" :data="data6"></Table>
+    <Table border :columns="columns" :data="data"></Table>
+        <Page :current="page" :page-size="pageSize" :total="total" size="small" show-elevator show-sizer class="margin-top-10" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
     </div>
 </template>
 <script>
-    /* eslint-disable indent */
+  /* eslint-disable indent */
 
-    export default {
+  export default {
     data () {
       return {
-        columns7: [
+        page:1,
+        pageSize:10,
+        total: 0,
+        columns: [
+          {
+            title: '用户名',
+            key: 'username'
+          },
           {
             title: '姓名',
-            key: 'name',
-            render: (h, params) => {
-              return h('div', [
-                h('Icon', {
-                  props: {
-                    type: 'person'
-                  }
-                }),
-                h('strong', params.row.name)
-              ]);
-            }
+            key: 'name'
           },
           {
             title: '角色',
             key: 'role'
           },
           {
-            title: 'Action',
+            title: '操作',
             key: 'action',
             width: 150,
             align: 'center',
@@ -55,23 +49,12 @@
                       this.show(params.index);
                     }
                   }
-                }, '查看'),
-                h('Button', {
-                  props: {
-                    type: 'error',
-                    size: 'small'
-                  },
-                  on: {
-                    click: () => {
-                      this.remove(params.index);
-                    }
-                  }
-                }, '删除')
+                }, '修改')
               ]);
             }
           }
         ],
-        data6: [
+        data: [
           {
             name: 'John Brown',
             role: 18,
@@ -97,7 +80,8 @@
     },
     methods: {
       load(){
-        this.$API.getUsers(1, 10).then(data => {
+        this.$API.getUsers(this.page, this.pageSize).then(data => {
+//          this.data.
           let res=[];
           data.content.forEach((user)=>{
             let username=user.username;
@@ -112,12 +96,23 @@
               });
             }
             res.push({
+              id: user.id,
+              username: username,
               name: username,
               role: role
             });
           });
-          this.data6=res;
+          this.data=res;
+          this.total=data.totalElements;
         });
+      },
+      pageChange(page){
+        this.page=page;
+        this.load();
+      },
+      pageSizeChange(pageSize){
+        this.pageSize=pageSize;
+        this.load();
       },
       show (index) {
         this.$Modal.info({
